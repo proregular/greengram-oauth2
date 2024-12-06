@@ -1,0 +1,39 @@
+#변수 선언
+file:
+  directory: D:/SGSG/download/green_gram_ver3
+
+const:
+  default-page-size: 20
+
+#MyBatis 설정
+mybatis:
+  mapper-locations: mappers/**/*.xml
+
+# 어플리케이션 설정
+spring:
+  application:
+    name: GreenGramVer3
+
+  #DB 연결 설정
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mariadb://localhost/greengram_ver3
+    username: root
+    password: green502
+
+  #File 업로드 설정
+  servlet:
+    multipart:
+      max-file-size: 15MB
+
+#Swagger 설정
+springdoc:
+  swagger-ui:
+    default-model-expand-depth: 10
+    display-request-duration: true
+    groups-order: asc
+    operations-sorter: method
+    path: /swagger
+    tags-sorter: alpha
+  cache:
+    disabled: true
