@@ -87,4 +87,16 @@ public class FeedService {
 
         return list;
     }
+
+    @Transactional
+    public int deleteFeed(FeedDeleteReq p) {
+        //피드 사진 삭제
+        String deletePath = String.format("%s/feed/%d", myFileUtils.getUploadPath(), p.getFeedId());
+        myFileUtils.deleteFolder(deletePath, true);
+        //피드 댓글, 좋아요 삭제
+        int affectedRows = feedMapper.delFeedLikeAndFeedCommentAndFeedPic(p);
+        log.info("affectedRows: {}", affectedRows);
+        //피드 삭제
+        return feedMapper.delFeed(p);
+    }
 }

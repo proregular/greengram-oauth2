@@ -21,9 +21,29 @@
         LEFT JOIN feed_like C
            ON A.feed_id = C.feed_id
           AND C.user_id = #{signedUserId}
+        <if test="profileUserId != null">
+            WHERE writer_user_id = #{profileUserId}
+        </if>
         ORDER BY A.feed_id DESC
         LIMIT #{startIdx}, #{size}
     </select>
 
+    <delete id="delFeedLikeAndFeedCommentAndFeedPic">
+        DELETE B, C, D
+        FROM feed A
+        LEFT JOIN feed_like B
+        ON A.feed_id = B.feed_id
+        LEFT JOIN feed_comment C
+        ON A.feed_id = C.feed_id
+        LEFT JOIN feed_pic D
+        ON A.feed_id = D.feed_id
+        WHERE A.feed_id = #{feedId}
+        AND A.writer_user_id = #{signedUserId}
+    </delete>
 
+    <delete id="delFeed">
+        DELETE FROM feed
+        WHERE feed_id = #{feedId}
+        AND writer_user_id = #{signedUserId}
+    </delete>
 </mapper>

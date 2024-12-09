@@ -12,7 +12,11 @@ import java.util.UUID;
 @Slf4j
 @Component //빈등록
 public class MyFileUtils {
-     private final String uploadPath;
+    public String getUploadPath() {
+        return uploadPath;
+    }
+
+    private final String uploadPath;
 
      /*
         @Value("${file.directory}")dms
@@ -59,6 +63,27 @@ public class MyFileUtils {
     public void transferTo(MultipartFile mf, String path) throws IOException {
          File file = new File(uploadPath, path);
          mf.transferTo(file);
+    }
+
+    // 폴더 삭제
+    public void deleteFolder(String path, boolean deleteRootFolder) {
+        File folder = new File(path);
+
+        if(folder.exists() && folder.isDirectory()) { //폴더가 존재하면서 디렉토리인가?
+            File[] includeFiles = folder.listFiles();
+
+            for(File f : includeFiles) {
+                if(f.isDirectory()) {
+                    deleteFolder(f.getAbsolutePath(), true);
+                } else {
+                    f.delete();
+                }
+            }
+
+            if(deleteRootFolder) {
+                folder.delete();
+            }
+        }
     }
 }
 
