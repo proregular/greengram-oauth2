@@ -26,4 +26,14 @@
         FROM feed_pic
         WHERE feed_id = #{feedId}
     </select>
+
+    <select id="selFeedPicListByFeedIds">
+        SELECT feed_id AS feedId, pic
+        FROM feed_pic
+        WHERE feed_id IN
+        <foreach collection="feedIds" item="feedId" open="(" separator="," close=")">
+            #{feedId}
+        </foreach>
+        ORDER BY feed_id ASC
+    </select>
 </mapper>

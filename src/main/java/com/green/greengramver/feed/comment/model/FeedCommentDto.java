@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class FeedCommentDto {
+    private long feedId;
     private long feedCommentId;
     private String comment;
     private long writerUserId;
