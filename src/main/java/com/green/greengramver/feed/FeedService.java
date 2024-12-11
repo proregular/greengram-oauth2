@@ -102,7 +102,7 @@ public class FeedService {
         List<FeedGetRes> list = feedMapper.selFeedList(p);
 
         // 스트림을 이용한 추출
-        List<Long> feddIdList2 = list.stream().map(FeedGetRes::getFeedId).toList();
+        List<Long> feddIds2 = list.stream().map(FeedGetRes::getFeedId).toList();
 
         // feed_id를 골라내야한다.
         List<Long> feedIds = new ArrayList<Long>(list.size());
@@ -111,27 +111,31 @@ public class FeedService {
             feedIds.add(item.getFeedId());
         }
 
+        // 피드와 관련된 사진 리스트
+        List<FeedPicSel> feedPicsList = feedPicMapper.selFeedPicListByFeedIds(feedIds);
 
-        // 피드 관련된 사진 리스트(SG 코드)
-        List<FeedPicSel> feedPics = feedPicMapper.selFeedPicListByFeedIds(feedIds);
-
-        log.info("feedPicList: {}", feedPics);
+        log.info("feedPicList: {}", feedPicsList);
 
         Map<Long, List<String>> picHashMap = new HashMap<>();
-        for(FeedPicSel item : feedPics) {
+
+        for(FeedPicSel item : feedPicsList) {
             long feedId = item.getFeedId();
+
             if(!picHashMap.containsKey(feedId)) {
                 picHashMap.put(feedId, new ArrayList<String>(2));
             }
+
             List<String> pics = picHashMap.get(feedId);
+
             pics.add(item.getPic());
         }
 
-        for(FeedGetRes res : list) {
-            res.setPics(picHashMap.get(res.getFeedId()));
-        }
+        // 피드 관련된 사진 리스트(SG 코드)
+//        for(FeedGetRes res : list) {
+//            res.setPics(picHashMap.get(res.getFeedId()));
+//        }
 
-//        // 피드 관련된 코멘트 리스트
+        // 피드 관련된 코멘트 리스트
 //        List<FeedCommentDto> feedComments = feedCommentMapper.selFeedCommentListByFeedIdsLimit4(feedIds);
 //
 //        Map<Long, List<FeedCommentDto>> commentHashMap = new HashMap<>();
@@ -165,7 +169,7 @@ public class FeedService {
 //            item.setComment(commentResHashMap.get(item.getFeedId()));
 //        }
 
-        //피드와 관련된 댓글 리스트
+        //피드와 관련된 댓글 리스트(강사님 ver)
         List<FeedCommentDto> feedCommentList = feedCommentMapper.selFeedCommentListByFeedIdsLimit4(feedIds);
         Map<Long, FeedCommentGetRes> commentHashMap = new HashMap<>();
 
@@ -175,7 +179,7 @@ public class FeedService {
             if(!commentHashMap.containsKey(feedId)) {
                 FeedCommentGetRes feedCommentGetRes = new FeedCommentGetRes();
 
-                feedCommentGetRes.setCommentList(new ArrayList<>());
+                feedCommentGetRes.setCommentList(new ArrayList<>(4));
                 commentHashMap.put(feedId, feedCommentGetRes);
             }
 
