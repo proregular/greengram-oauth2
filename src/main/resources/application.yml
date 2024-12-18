@@ -9,6 +9,10 @@ const:
 mybatis:
   mapper-locations: mappers/**/*.xml
 
+jwt:
+  issuer: green@green.kr
+  secret_key: studyspringbootsagongsugikoreaairforceunivercityyoungjinaaa
+
 # 어플리케이션 설정
 spring:
   application:

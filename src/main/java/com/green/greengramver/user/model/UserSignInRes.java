@@ -12,6 +12,7 @@ public class UserSignInRes {
     private String nickName;
     private String pic;
     private long userId;
+    private String accessToken;
 
     @JsonIgnore // swagger 표시 안되지만, 응답 때 빼는 역할도 한다.
     private String upw;
