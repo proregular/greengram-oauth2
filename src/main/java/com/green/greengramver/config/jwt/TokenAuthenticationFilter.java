@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,10 +23,17 @@ public class TokenAuthenticationFilter  extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorizeationHeader = request.getHeader(HEADER_AUTHORIZATION);
+        String authorizeationHeader = request.getHeader(HEADER_AUTHORIZATION); // Bearer 토큰값
         log.info("authorizeationHeader: {}", authorizeationHeader);
 
         String token = getAccessToken(authorizeationHeader);
+        log.info("token: {}", token);
+
+        if(tokenProvider.validToken(token)) {
+            Authentication auth = tokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+
         filterChain.doFilter(request, response);
     }
 

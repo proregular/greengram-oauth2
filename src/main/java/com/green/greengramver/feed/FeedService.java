@@ -170,7 +170,7 @@ public class FeedService {
 //        }
 
         //피드와 관련된 댓글 리스트(강사님 ver)
-        List<FeedCommentDto> feedCommentList = feedCommentMapper.selFeedCommentListByFeedIdsLimit4(feedIds);
+        List<FeedCommentDto> feedCommentList = feedCommentMapper.selFeedCommentListByFeedIds(feedIds);
         Map<Long, FeedCommentGetRes> commentHashMap = new HashMap<>();
 
         for(FeedCommentDto item : feedCommentList) {

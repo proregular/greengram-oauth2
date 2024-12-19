@@ -1,5 +1,6 @@
 package com.green.greengramver.config.security;
 
+import com.green.greengramver.config.jwt.TokenAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,12 +10,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     //private final MyUserDetails myUserDetails;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
 //    // 스프링 시큐리티 기능 비활성화 (스프링 시큐리티가 관여하지 않았으면 하는 부분)
 //    @Bean
@@ -33,6 +36,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/user/pic").authenticated()
                         .anyRequest().permitAll() // 나머지는 모두 허용
                 )
+                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

@@ -38,11 +38,11 @@ public class FeedController {
 
         List<FeedGetRes> list = service.getFeedList3(p);
 
-        return null;
-        /*return ResultResponse.<List<FeedGetRes>>builder()
+        //return null;
+        return ResultResponse.<List<FeedGetRes>>builder()
                 .resultMessage(String.format("%d rows", list.size()))
                 .resultData(list)
-                .build();*/
+                .build();
     }
 
     @DeleteMapping
