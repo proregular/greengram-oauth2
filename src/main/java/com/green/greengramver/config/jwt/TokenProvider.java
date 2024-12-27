@@ -2,11 +2,14 @@ package com.green.greengramver.config.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.greengramver.common.exception.CustomException;
+import com.green.greengramver.common.exception.UserErrorCode;
 import com.green.greengramver.config.security.MyUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,10 +68,11 @@ public class TokenProvider {
             //sgMemo: 만약 유효기간이 지났다면 메소드를 호출 했을때 예외가 발생하니
             // 그 상황으로 유효한 토큰인지 검사 할 수 있다.
             getClaims(token);
-            return true;
         } catch (Exception e) {
-            return false;
+            throw new CustomException(UserErrorCode.EXPIRED_TOKEN);
         }
+
+        return true;
     }
 
     // Spring security에서 인증 처리를 해주어야 한다. 그때 Authentication 객체가 필요
@@ -79,7 +83,7 @@ public class TokenProvider {
                 : new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
-    public UserDetails getUserDetailsFromToken(String token) {
+    public JwtUser getUser(String token) {
         Claims claims = getClaims(token);
         String json = (String)claims.get("signedUser");
         JwtUser jwtUser = null;
@@ -90,8 +94,14 @@ public class TokenProvider {
             throw new RuntimeException(e);
         }
 
+        return jwtUser;
+    }
+
+    public UserDetails getUserDetailsFromToken(String token) {
+        JwtUser jwtUser = getUser(token);
         MyUserDetails userDetails = new MyUserDetails();
         userDetails.setJwtUser(jwtUser);
+
         return userDetails;
     }
 

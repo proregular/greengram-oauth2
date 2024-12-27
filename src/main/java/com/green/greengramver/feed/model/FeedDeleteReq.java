@@ -12,9 +12,13 @@ public class FeedDeleteReq {
     private long feedId;
     @Schema(description = "로그인 유저 PK", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     private long signedUserId;
-    @ConstructorProperties({"feed_id", "signed_user_id"})
-    public FeedDeleteReq(long feedId, long signedUserId) {
+
+    @ConstructorProperties({"feed_id"})
+    public FeedDeleteReq(long feedId) {
         this.feedId = feedId;
+    }
+
+    public void setSignedUserId(long signedUserId) {
         this.signedUserId = signedUserId;
     }
 }

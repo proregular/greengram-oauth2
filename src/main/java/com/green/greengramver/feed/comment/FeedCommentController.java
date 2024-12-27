@@ -4,6 +4,7 @@ import com.green.greengramver.common.model.ResultResponse;
 import com.green.greengramver.feed.comment.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -17,7 +18,7 @@ public class FeedCommentController {
     private final FeedCommentService service;
 
     @PostMapping
-    public ResultResponse<Long> postFeedComment(@RequestBody FeedCommentPostReq p) {
+    public ResultResponse<Long> postFeedComment(@Valid @RequestBody FeedCommentPostReq p) {
         long result = service.postFeedComment(p);
 
         return ResultResponse.<Long>builder()
@@ -27,7 +28,7 @@ public class FeedCommentController {
     }
 
     @GetMapping
-    public ResultResponse<FeedCommentGetRes> getFeedComment(@ParameterObject @ModelAttribute FeedCommentGetReq p) {
+    public ResultResponse<FeedCommentGetRes> getFeedComment(@Valid @ParameterObject @ModelAttribute FeedCommentGetReq p) {
         FeedCommentGetRes res = service.getFeedComment(p);
 
         return ResultResponse.<FeedCommentGetRes>builder()

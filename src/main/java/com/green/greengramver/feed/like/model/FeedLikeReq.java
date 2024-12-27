@@ -14,4 +14,8 @@ public class FeedLikeReq {
     private long feedId;
     @Schema(description = "유저 아이디", example = "12", requiredMode = Schema.RequiredMode.REQUIRED)
     private long userId;
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 }

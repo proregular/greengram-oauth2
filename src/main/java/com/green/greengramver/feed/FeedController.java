@@ -3,6 +3,7 @@ package com.green.greengramver.feed;
 import com.green.greengramver.common.model.ResultResponse;
 import com.green.greengramver.feed.model.*;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -21,7 +22,7 @@ public class FeedController {
     @PostMapping
     @Operation(summary = "Feed 등록", description = "피드를 등록하는 API")
     public ResultResponse<FeedPostRes> postFeed(@RequestPart List<MultipartFile> pics
-                                              , @RequestPart FeedPostReq p) {
+                                              , @Valid @RequestPart FeedPostReq p) {
         log.info("p----------------------: {}", p);
         FeedPostRes res = service.postFeed(pics, p);
 
@@ -33,7 +34,7 @@ public class FeedController {
 
     @GetMapping
     @Operation(summary = "Feed 조회", description = "피드를 조회하는 API")
-    public ResultResponse<List<FeedGetRes>> getFeedList(@ParameterObject @ModelAttribute FeedGetReq p) {
+    public ResultResponse<List<FeedGetRes>> getFeedList(@Valid @ParameterObject @ModelAttribute FeedGetReq p) {
         log.info("p----------------------: {}", p);
 
         List<FeedGetRes> list = service.getFeedList3(p);

@@ -1,0 +1,14 @@
+#변수 선언
+file:
+  directory: D:/SGSG/download/tdd
+
+# 어플리케이션 설정
+spring:
+  #DB 연결 설정
+  datasource:
+    url: jdbc:log4jdbc:mariadb://localhost/greengram_ver3_test
+    username: root
+    password: green502
+  sql:
+    init:
+      mode: always #resource아래에 있는 schema.sql(DB생성, Table생성 DDL), data.sql(데이터 insert DML)파일을 프로젝트(테스트) 시작시 실행한다.

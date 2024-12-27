@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.greengramver.common.CommonUtils;
 import com.green.greengramver.common.CookieUtils;
 import com.green.greengramver.common.MyFileUtils;
+import com.green.greengramver.common.exception.CustomException;
+import com.green.greengramver.common.exception.UserErrorCode;
 import com.green.greengramver.config.jwt.JwtProperties;
 import com.green.greengramver.config.jwt.JwtUser;
 import com.green.greengramver.config.jwt.TokenProvider;
+import com.green.greengramver.config.security.AuthenticationFacade;
 import com.green.greengramver.user.model.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +36,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final CookieUtils cookieUtils;
+    private final AuthenticationFacade authenticationFacade;
 
     public int signUp(MultipartFile pic, UserSignUpReq p) {
         String saveFileName = (pic != null) ? myFileUtils.makeRandomFileName(pic) : null; // 저장할 파일명
@@ -74,14 +78,8 @@ public class UserService {
     public UserSignInRes signIn(UserSignInReq p, HttpServletResponse response) {
         UserSignInRes res = mapper.selUserByUid(p.getUid());
 
-        if(res == null) {
-            res = new UserSignInRes();
-            res.setMessage("아이디를 확인해 주세요.");
-        } else if(!passwordEncoder.matches(p.getUpw(), res.getUpw())) {
-            res = new UserSignInRes();
-            res.setMessage("비밀번호를 확인해 주세요.");
-        } else {
-            res.setMessage("로그인 성공");
+        if(res == null || !passwordEncoder.matches(p.getUpw(), res.getUpw())) {
+            throw new CustomException(UserErrorCode.INCORRECT_ID_PW);
         }
 
         /*
@@ -98,18 +96,21 @@ public class UserService {
 
         jwtUser.setRoles(roles);
 
-        String accessToken = tokenProvider.generateToken(jwtUser, Duration.ofMinutes(20));
+        String accessToken = tokenProvider.generateToken(jwtUser, Duration.ofSeconds(30));
         String refreshToken = tokenProvider.generateToken(jwtUser, Duration.ofDays(15));
 
-        res.setAccessToken(accessToken);
+        
         int maxAge = 1_296_000; // 15 * 24 * 60 * 60 15일의 초(second)값
 
         cookieUtils.setCookie(response, "refreshToken", refreshToken, 1296000);
-
+        
+        res.setMessage("로그인 성공");
+        res.setAccessToken(accessToken);
         return res;
     }
 
     public UserInfoGetRes getUserInfo(UserInfoGetReq p) {
+        p.setSignedUserId(authenticationFacade.getSignedUserId());
         return mapper.selUserInfo(p);
     }
 
@@ -118,10 +119,14 @@ public class UserService {
         String refreshToken = cookie.getValue();
         log.info("refreshToken: {}", refreshToken);
 
-        return refreshToken;
+        JwtUser jwtUser = tokenProvider.getUser(refreshToken);
+        String accessToken = tokenProvider.generateToken(jwtUser, Duration.ofSeconds(30));
+
+        return accessToken;
     }
 
     public String patchUserPic(UserPicPatchReq p) {
+        p.setSignedUserId(authenticationFacade.getSignedUserId());
         //1. 저장할 파일명 생성(Random) 확장자는 오리지널 파일명과 일치하게한다.
         String savedPicName = (p.getPic() != null ? myFileUtils.makeRandomFileName(p.getPic().getOriginalFilename()) : null);
 

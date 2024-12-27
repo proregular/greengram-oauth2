@@ -29,6 +29,8 @@ spring:
   servlet:
     multipart:
       max-file-size: 15MB
+  jackson:
+    default-property-inclusion: non_null #응답 JSON을 만들 때 null인 속성은 제외한다.
 
 #Swagger 설정
 springdoc:

@@ -14,9 +14,12 @@ public class FeedCommentDelReq {
     @Schema(name="signed_user_id")
     private long userId;
 
-    @ConstructorProperties({"feed_comment_id", "signed_user_id"})
-    public FeedCommentDelReq(long feedCommentId, long signedUserId) {
+    @ConstructorProperties({"feed_comment_id"})
+    public FeedCommentDelReq(long feedCommentId) {
         this.feedCommentId = feedCommentId;
+    }
+
+    public void setSignedUserId(long signedUserId) {
         this.userId = signedUserId;
     }
 }

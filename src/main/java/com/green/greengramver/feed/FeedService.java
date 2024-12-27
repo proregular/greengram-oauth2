@@ -1,6 +1,9 @@
 package com.green.greengramver.feed;
 
 import com.green.greengramver.common.MyFileUtils;
+import com.green.greengramver.common.exception.CustomException;
+import com.green.greengramver.common.exception.FeedErrorCode;
+import com.green.greengramver.config.security.AuthenticationFacade;
 import com.green.greengramver.feed.comment.FeedCommentMapper;
 import com.green.greengramver.feed.comment.model.FeedCommentDto;
 import com.green.greengramver.feed.comment.model.FeedCommentGetReq;
@@ -27,10 +30,15 @@ public class FeedService {
     private final FeedCommentMapper feedCommentMapper;
     private final MyFileUtils myFileUtils;
     private final FeedPicMapper feedPicMapper;
+    private final AuthenticationFacade authenticationFacade;
 
     @Transactional
     public FeedPostRes postFeed(List<MultipartFile> pics, FeedPostReq p) {
+        p.setWriterUserId(authenticationFacade.getSignedUserId());
         int result = feedMapper.insFeed(p);
+        if(result == 0) {
+            throw new CustomException(FeedErrorCode.FAIL_TO_REG);
+        }
         long feedId = p.getFeedId();
 
         // 파일 등록
@@ -68,6 +76,8 @@ public class FeedService {
     }
 
     public List<FeedGetRes> getFeedList(FeedGetReq p) {
+        p.setSignedUserId(authenticationFacade.getSignedUserId());
+
         List<FeedGetRes> list = feedMapper.selFeedList(p);
 
         for(FeedGetRes item : list) {
@@ -98,8 +108,12 @@ public class FeedService {
 
     // select 3번, 피드 5,000개 있음, 페이지당 20개씩 가져온다.
     public List<FeedGetRes> getFeedList3(FeedGetReq p) {
+        p.setSignedUserId(authenticationFacade.getSignedUserId());
         //피드 리스트
         List<FeedGetRes> list = feedMapper.selFeedList(p);
+        if(list.size() == 0) {
+            return list;
+        }
 
         // 스트림을 이용한 추출
         List<Long> feddIds2 = list.stream().map(FeedGetRes::getFeedId).toList();
@@ -212,6 +226,7 @@ public class FeedService {
 
     @Transactional
     public int deleteFeed(FeedDeleteReq p) {
+        p.setSignedUserId(authenticationFacade.getSignedUserId());
         //피드 댓글, 좋아요 삭제
         int affectedRowsEtc = feedMapper.delFeedLikeAndFeedCommentAndFeedPic(p);
         log.info("affectedRows: {}", affectedRowsEtc);

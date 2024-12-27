@@ -3,9 +3,10 @@ package com.green.greengramver.common.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
+@SuperBuilder
 public class ResultResponse<T> {
     @Schema(title = "결과 메세지")
     private String resultMessage;
