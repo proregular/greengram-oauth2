@@ -1,5 +1,6 @@
 package com.green.greengramver.feed;
 
+import com.green.greengramver.feed.like.model.FeedPicVo;
 import com.green.greengramver.feed.model.FeedPicDTO;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.MyBatisSystemException;
@@ -11,6 +12,8 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class FeedPicMapperTest {
     @Autowired
     FeedPicMapper feedPicMapper;
+
+    @Autowired
+    FeedPicTestMapper feedPicTestMapper;
 
     @Test
     void insFeedPicNoFeedIdThrowForeignKeyException() {
@@ -58,15 +64,26 @@ class FeedPicMapperTest {
     void insFeedPic() {
         String[] pics = {"a.jpg", "b.jpg", "c.jpg" };
         FeedPicDTO givenParam = new FeedPicDTO();
-        givenParam.setFeedId(1L);
+        givenParam.setFeedId(5L);
         givenParam.setPics(new ArrayList<>(pics.length));
 
         for(String pic : pics) {
             givenParam.getPics().add(pic);
         }
 
+        List<FeedPicVo> feedPicListBefore = feedPicTestMapper.selFeedPicList(givenParam.getFeedId());
         int actualAffectedRows = feedPicMapper.insFeedPic(givenParam);
+        List<FeedPicVo> feedPicListAfter = feedPicTestMapper.selFeedPicList(givenParam.getFeedId());
 
+        assertAll(
+                () -> {
+
+                }
+                , () -> assertEquals(givenParam.getPics().size(), actualAffectedRows)
+                , () -> assertEquals(0, feedPicListBefore.size())
+                , () -> assertEquals(givenParam.getPics().size(), feedPicListAfter.size())
+                , () ->  assertTrue(feedPicListAfter.containsAll(Arrays.asList(pics)))
+        );
         assertEquals(givenParam.getPics().size(), actualAffectedRows);
     }
 

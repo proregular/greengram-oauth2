@@ -8,6 +8,8 @@ const:
 #MyBatis 설정
 mybatis:
   mapper-locations: mappers/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
 
 jwt:
   issuer: green@green.kr
