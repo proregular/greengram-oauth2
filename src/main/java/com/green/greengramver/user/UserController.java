@@ -39,7 +39,7 @@ public class UserController {
         UserSignInRes res = service.signIn(p, response);
 
         return ResultResponse.<UserSignInRes>builder()
-                .resultMessage(res.getMessage())
+                .resultMessage("로그인 성공")
                 .resultData(res)
                 .build();
     }

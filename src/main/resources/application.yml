@@ -1,6 +1,6 @@
 #변수 선언
 file:
-  directory: D:/SGSG/download/green_gram_ver3
+  directory: D:/SGSG/download/green_gram_jpa
 
 const:
   default-page-size: 20
@@ -23,9 +23,24 @@ spring:
   #DB 연결 설정
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:mariadb://localhost/greengram_ver3
+    url: jdbc:log4jdbc:mariadb://localhost/greengram_jpa
     username: root
     password: green502
+  sql:
+    init:
+      mode: always
+  jpa:
+    database: mysql
+    hibernate:
+      #ddl-auto: update #entity가 없으면 create, 기존 존재하는 entity는 컬럼을 새롭게 추가하는 것만 반영
+      ddl-auto: create # entity를 서버 기동할 때마다 drop 후 create 한다.
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        format_sql: true # 로그 찍을 때 보기 편하게 포맷함
+        order_updates: true # JPA_Batch 작업 활성화
+        show_sql: true # JPA가 만든 쿼리문 로그에 출력
 
   #File 업로드 설정
   servlet:

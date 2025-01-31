@@ -3,6 +3,7 @@ package com.green.greengramver.feed.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,6 +12,7 @@ import lombok.ToString;
 @Setter
 @Schema(description = "피드 등록 정보")
 @ToString
+@EqualsAndHashCode
 public class FeedPostReq {
     @JsonIgnore
     private long feedId;

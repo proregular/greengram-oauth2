@@ -10,6 +10,7 @@ import com.green.greengramver.config.jwt.JwtProperties;
 import com.green.greengramver.config.jwt.JwtUser;
 import com.green.greengramver.config.jwt.TokenProvider;
 import com.green.greengramver.config.security.AuthenticationFacade;
+import com.green.greengramver.entity.User;
 import com.green.greengramver.user.model.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,26 +38,27 @@ public class UserService {
     private final TokenProvider tokenProvider;
     private final CookieUtils cookieUtils;
     private final AuthenticationFacade authenticationFacade;
+    private final UserRepository userRepository;
 
     public int signUp(MultipartFile pic, UserSignUpReq p) {
         String saveFileName = (pic != null) ? myFileUtils.makeRandomFileName(pic) : null; // 저장할 파일명
 
-        // 파일명, 비밀번호(암호화된) Set
-        p.setPic(saveFileName);
-        p.setUpw(BCrypt.hashpw(p.getUpw(), BCrypt.gensalt()));
+        String hashedPassword = BCrypt.hashpw(p.getUpw(), BCrypt.gensalt());
 
-
-        if(p.getNickName() == null || p.getNickName() == "") {
-            p.setNickName(CommonUtils.getRandomNickName());
-        }
+        User user = new User();
+        user.setNickName(p.getNickName());
+        user.setUid(p.getUid());
+        user.setUpw(hashedPassword);
+        user.setPic(saveFileName);
 
         // DB Insert
-        int result = mapper.insUser(p);
+        //int result = mapper.insUser(p);
+        userRepository.save(user);
 
         // 유저정보가 성공적으로 저장됐고 사진 파일이 존재할 경우
-        if(result == 1 && pic != null) {
+        if(pic != null) {
             //파일 업로드(저장할 경로 user/{유저번호})
-            String middlePath = String.format("user/%d", p.getUserId());
+            String middlePath = String.format("user/%d", user.getUserId());
 
             // 폴더 생성
             myFileUtils.makeFolders(middlePath);
@@ -72,13 +74,14 @@ public class UserService {
             }
         }
 
-        return result;
+        return 1;
     }
 
     public UserSignInRes signIn(UserSignInReq p, HttpServletResponse response) {
-        UserSignInRes res = mapper.selUserByUid(p.getUid());
+        User user = userRepository.findByUid(p.getUid());
+        //UserSignInRes res = mapper.selUserByUid(p.getUid());
 
-        if(res == null || !passwordEncoder.matches(p.getUpw(), res.getUpw())) {
+        if(user == null || !passwordEncoder.matches(p.getUpw(), user.getUpw())) {
             throw new CustomException(UserErrorCode.INCORRECT_ID_PW);
         }
 
@@ -87,7 +90,7 @@ public class UserService {
         */
         JwtUser jwtUser = new JwtUser();
 
-        jwtUser.setSignedUserId(res.getUserId());
+        jwtUser.setSignedUserId(user.getUserId());
 
         List<String> roles = new ArrayList<>(2);
 
@@ -103,10 +106,11 @@ public class UserService {
         int maxAge = 1_296_000; // 15 * 24 * 60 * 60 15일의 초(second)값
 
         cookieUtils.setCookie(response, "refreshToken", refreshToken, 1296000);
-        
-        res.setMessage("로그인 성공");
-        res.setAccessToken(accessToken);
-        return res;
+
+        return new UserSignInRes(user.getUserId()
+                , user.getNickName()
+                , user.getPic()
+                , accessToken);
     }
 
     public UserInfoGetRes getUserInfo(UserInfoGetReq p) {
