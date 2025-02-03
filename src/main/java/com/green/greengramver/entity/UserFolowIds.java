@@ -1,6 +1,5 @@
 package com.green.greengramver.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,8 +11,7 @@ import java.io.Serializable;
 @Setter
 @Embeddable
 @EqualsAndHashCode
-public class FeedPicIds implements Serializable {
-    private Long feedId;
-    @Column(length = 50)
-    private String pic;
+public class UserFolowIds implements Serializable {
+    private Long fromUserId;
+    private Long toUserId;
 }
