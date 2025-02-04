@@ -23,5 +23,20 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
     int deleteFeed(Long feedId, Long writerUserId);
     /*
     Feed (대문자로 시작) - 클래스명 작성해야 함
+
+    feedId=1, writerUserId=2 가정하에 아래 SQL문이 만들어진다.
+
+    실제 생성된 코드)
+    DELETE FROM feed f
+    WHERE f.feed_id = 1
+    AND f.user_id = 2
+
+    예상한 코드)
+    DELETE FROM feed f
+    INNER JOIN user
+    ON f.user_id = user.user_id
+    WHERE f.feed_id = 1
+    and f.user_id = 2
+
      */
 }

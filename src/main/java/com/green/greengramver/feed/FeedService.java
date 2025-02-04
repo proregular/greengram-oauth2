@@ -271,6 +271,6 @@ public class FeedService {
 //        //피드 삭제
 //        int affectedRows = feedMapper.delFeed(p);
 
-        return 1;
+        return affectRows;
     }
 }

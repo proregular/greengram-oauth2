@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Feed extends UpdatedAt{
+public class Feed extends UpdatedAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedId;
