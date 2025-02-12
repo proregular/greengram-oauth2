@@ -1,0 +1,58 @@
+[2024-12-31 09:49:08 INFO background-preinit] [org.hibernate.validator.internal.util.Version] HV000001: Hibernate Validator 8.0.1.Final
+[2024-12-31 09:49:08 INFO Test worker] [com.green.greengramver.feed.like.FeedLikeMapperTest] Starting FeedLikeMapperTest using Java 17.0.12 with PID 6164 (started by Administrator in D:\SGSG\GreenGramTdd)
+[2024-12-31 09:49:08 INFO Test worker] [com.green.greengramver.feed.like.FeedLikeMapperTest] The following 1 profile is active: "test"
+[2024-12-31 09:49:09 INFO Test worker] [com.green.greengramver.feed.like.FeedLikeMapperTest] Started FeedLikeMapperTest in 1.082 seconds (process running for 1.977)
+[2024-12-31 09:49:09 INFO Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2024-12-31 09:49:09 INFO Test worker] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection net.sf.log4jdbc.sql.jdbcapi.ConnectionSpy@2dbfa972
+[2024-12-31 09:49:09 INFO Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2024-12-31 09:49:10 DEBUGTest worker] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT * FROM feed_like
+ {executed in 0 msec}
+[2024-12-31 09:49:10 INFO Test worker] [jdbc.resultsettable] 
+|--------|--------|--------------------|
+|feed_id |user_id |created_at          |
+|--------|--------|--------------------|
+|1       |2       |2024-11-01 10:10:01 |
+|2       |1       |2024-11-01 10:10:02 |
+|3       |2       |2024-11-01 10:10:03 |
+|--------|--------|--------------------|
+
+[2024-12-31 09:49:10 DEBUGTest worker] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT * FROM feed_like WHERE feed_id = 5 AND user_id = 2
+ {executed in 0 msec}
+[2024-12-31 09:49:10 INFO Test worker] [jdbc.resultsettable] 
+|--------|--------|-----------|
+|feed_id |user_id |created_at |
+|--------|--------|-----------|
+|--------|--------|-----------|
+
+[2024-12-31 09:49:10 DEBUGTest worker] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. INSERT INTO feed_like
+        SET feed_id = 5
+          , user_id = 2
+ {executed in 0 msec}
+[2024-12-31 09:49:10 DEBUGTest worker] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT * FROM feed_like WHERE feed_id = 5 AND user_id = 2
+ {executed in 0 msec}
+[2024-12-31 09:49:10 INFO Test worker] [jdbc.resultsettable] 
+|--------|--------|--------------------|
+|feed_id |user_id |created_at          |
+|--------|--------|--------------------|
+|5       |2       |2024-12-31 09:49:10 |
+|--------|--------|--------------------|
+
+[2024-12-31 09:49:10 DEBUGTest worker] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.execute(ProxyPreparedStatement.java:44)
+1. SELECT * FROM feed_like
+ {executed in 0 msec}
+[2024-12-31 09:49:10 INFO Test worker] [jdbc.resultsettable] 
+|--------|--------|--------------------|
+|feed_id |user_id |created_at          |
+|--------|--------|--------------------|
+|1       |2       |2024-11-01 10:10:01 |
+|2       |1       |2024-11-01 10:10:02 |
+|3       |2       |2024-11-01 10:10:03 |
+|5       |2       |2024-12-31 09:49:10 |
+|--------|--------|--------------------|
+
+[2024-12-31 09:49:10 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2024-12-31 09:49:10 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.

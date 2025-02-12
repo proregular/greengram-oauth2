@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class User extends UpdatedAt{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
+    @GeneratedValue(strategy = GenerationType.AUTO) // auto_increment
     private Long userId;
 
     @Column(nullable = false, length = 30, unique = true)
