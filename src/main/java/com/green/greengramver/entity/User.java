@@ -1,5 +1,6 @@
 package com.green.greengramver.entity;
 
+import com.green.greengramver.config.security.SignInProviderType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,12 +8,22 @@ import lombok.Setter;
 @Entity // 테이블을 만들고 DML때 사용
 @Getter
 @Setter
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        columnNames = { "uid", "provider_type" }
+                )
+        }
+)
 public class User extends UpdatedAt{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // auto_increment
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Long userId;
 
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false)
+    private SignInProviderType providerType;
+
+    @Column(nullable = false, length = 30)
     private String uid;
 
     @Column(nullable = false, length = 100)
