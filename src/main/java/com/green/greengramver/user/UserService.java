@@ -1,12 +1,9 @@
 package com.green.greengramver.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.greengramver.common.CommonUtils;
 import com.green.greengramver.common.CookieUtils;
 import com.green.greengramver.common.MyFileUtils;
 import com.green.greengramver.common.exception.CustomException;
 import com.green.greengramver.common.exception.UserErrorCode;
-import com.green.greengramver.config.jwt.JwtProperties;
 import com.green.greengramver.config.jwt.JwtUser;
 import com.green.greengramver.config.jwt.TokenProvider;
 import com.green.greengramver.config.security.AuthenticationFacade;
@@ -23,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;

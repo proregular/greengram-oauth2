@@ -1,6 +1,5 @@
 package com.green.greengramver.config.security.oauth;
 
-import com.green.greengramver.config.jwt.JwtUser;
 import com.green.greengramver.config.security.MyUserDetails;
 import com.green.greengramver.config.security.SignInProviderType;
 import com.green.greengramver.config.security.oauth.userInfo.Oauth2UserInfo;
@@ -12,13 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.AuthenticationException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 @Slf4j
 @Service
@@ -62,13 +59,14 @@ public class MyOauth2UserService extends DefaultOAuth2UserService {
             user.setPic(oauth2UserInfo.getProfileImageUrl());
             userRepository.save(user);
         }
-        JwtUser jwtUser = new JwtUser();
-        jwtUser.setSignedUserId(user.getUserId());
-        jwtUser.setRoles(new ArrayList<>(1));
-        jwtUser.getRoles().add("ROLE_USER");
+
+        Oauth2JwtUser oauth2JwtUser = new Oauth2JwtUser(user.getNickName()
+                , user.getPic()
+                , user.getUserId()
+                , Arrays.asList("ROLE_USER"));
 
         MyUserDetails myUserDetails = new MyUserDetails();
-        myUserDetails.setJwtUser(jwtUser);
+        myUserDetails.setJwtUser(oauth2JwtUser);
 
         return myUserDetails;
     }

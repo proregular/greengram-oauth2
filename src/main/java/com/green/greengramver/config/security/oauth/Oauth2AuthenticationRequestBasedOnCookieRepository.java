@@ -29,7 +29,7 @@ public class Oauth2AuthenticationRequestBasedOnCookieRepository
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
         if(authorizationRequest == null) {
-            this.removeAuthorizationRequest(response);
+            this.removeAuthorizationCookies(response);
         }
 
         cookieUtils.setCookie(response
@@ -52,7 +52,7 @@ public class Oauth2AuthenticationRequestBasedOnCookieRepository
         return this.loadAuthorizationRequest(request);
     }
 
-    public void removeAuthorizationRequest(HttpServletResponse response) {
+    public void removeAuthorizationCookies(HttpServletResponse response) {
         cookieUtils.deleteCookie(response, globalOauth2.getAuthorizationRequestCookieName());
         cookieUtils.deleteCookie(response, globalOauth2.getRedirectUriParamCookieName());
     }
