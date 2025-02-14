@@ -1,0 +1,534 @@
+[2025-02-13 10:38:06 INFO background-preinit] [org.hibernate.validator.internal.util.Version] HV000001: Hibernate Validator 8.0.1.Final
+[2025-02-13 10:38:06 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] Starting GreenGramVer3Application using Java 17.0.12 with PID 20220 (D:\SGSG\GreenGramOAuth2\build\classes\java\main started by Administrator in D:\SGSG\GreenGramOAuth2)
+[2025-02-13 10:38:06 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] No active profile set, falling back to 1 default profile: "default"
+[2025-02-13 10:38:06 INFO restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2025-02-13 10:38:06 INFO restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2025-02-13 10:38:07 INFO restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2025-02-13 10:38:07 INFO restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 41 ms. Found 4 JPA repository interfaces.
+[2025-02-13 10:38:07 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 8080 (http)
+[2025-02-13 10:38:07 INFO restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-8080"]
+[2025-02-13 10:38:07 INFO restartedMain] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2025-02-13 10:38:07 INFO restartedMain] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.33]
+[2025-02-13 10:38:07 INFO restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2025-02-13 10:38:07 INFO restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 1334 ms
+[2025-02-13 10:38:08 INFO restartedMain] [org.hibernate.jpa.internal.util.LogHelper] HHH000204: Processing PersistenceUnitInfo [name: default]
+[2025-02-13 10:38:08 INFO restartedMain] [org.hibernate.Version] HHH000412: Hibernate ORM core version 6.5.3.Final
+[2025-02-13 10:38:08 INFO restartedMain] [org.hibernate.cache.internal.RegionFactoryInitiator] HHH000026: Second-level cache disabled
+[2025-02-13 10:38:08 INFO restartedMain] [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo] No LoadTimeWeaver setup: ignoring JPA class transformer
+[2025-02-13 10:38:08 INFO restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2025-02-13 10:38:08 INFO restartedMain] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection net.sf.log4jdbc.sql.jdbcapi.ConnectionSpy@7097d050
+[2025-02-13 10:38:08 INFO restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2025-02-13 10:38:08 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.executeQuery(ProxyStatement.java:110)
+1. SELECT @@character_set_database, @@sql_mode
+ {executed in 0 msec}
+[2025-02-13 10:38:08 WARN restartedMain] [org.hibernate.orm.deprecation] HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2025-02-13 10:38:09 INFO restartedMain] [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. create table feed (
+        feed_id bigint not null auto_increment,
+        created_at datetime(6) not null,
+        updated_at datetime(6) not null,
+        contents varchar(1000),
+        location varchar(30),
+        writer_user_id bigint not null,
+        primary key (feed_id)
+    ) engine=InnoDB
+ {executed in 10 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. create table feed_comment (
+        feed_comment_id bigint not null auto_increment,
+        created_at datetime(6) not null,
+        updated_at datetime(6) not null,
+        comment varchar(150) not null,
+        feed_id bigint,
+        user_id bigint,
+        primary key (feed_comment_id)
+    ) engine=InnoDB
+ {executed in 7 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. create table feed_like (
+        created_at datetime(6) not null,
+        feed_id bigint not null,
+        user_id bigint not null,
+        primary key (feed_id, user_id)
+    ) engine=InnoDB
+ {executed in 7 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. create table feed_pic (
+        pic varchar(50) not null,
+        created_at datetime(6) not null,
+        feed_id bigint not null,
+        primary key (feed_id, pic)
+    ) engine=InnoDB
+ {executed in 6 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. create table user (
+        user_id bigint not null auto_increment,
+        created_at datetime(6) not null,
+        updated_at datetime(6) not null,
+        nick_name varchar(100),
+        pic varchar(50),
+        provider_type tinyint not null check (provider_type between 0 and 3),
+        uid varchar(30) not null,
+        upw varchar(100) not null,
+        primary key (user_id)
+    ) engine=InnoDB
+ {executed in 7 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. create table user_follow (
+        created_at datetime(6) not null,
+        to_user_id bigint not null,
+        from_user_id bigint not null,
+        primary key (to_user_id, from_user_id)
+    ) engine=InnoDB
+ {executed in 6 msec}
+[2025-02-13 10:38:09 WARN restartedMain] [org.mariadb.jdbc.message.server.ErrorPacket] Error: 1091-42000: Can't DROP INDEX `UKb87p6qocmykrbhvhbft82x423`; check that it exists
+[2025-02-13 10:38:09 ERRORrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table user 
+       drop index UKb87p6qocmykrbhvhbft82x423
+ {FAILED after 13 msec}
+java.sql.SQLSyntaxErrorException: (conn=4) Can't DROP INDEX `UKb87p6qocmykrbhvhbft82x423`; check that it exists
+	at org.mariadb.jdbc.export.ExceptionFactory.createException(ExceptionFactory.java:289)
+	at org.mariadb.jdbc.export.ExceptionFactory.create(ExceptionFactory.java:378)
+	at org.mariadb.jdbc.message.ClientMessage.readPacket(ClientMessage.java:172)
+	at org.mariadb.jdbc.client.impl.StandardClient.readPacket(StandardClient.java:915)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResults(StandardClient.java:854)
+	at org.mariadb.jdbc.client.impl.StandardClient.readResponse(StandardClient.java:773)
+	at org.mariadb.jdbc.client.impl.StandardClient.execute(StandardClient.java:697)
+	at org.mariadb.jdbc.Statement.executeInternal(Statement.java:1035)
+	at org.mariadb.jdbc.Statement.execute(Statement.java:1165)
+	at org.mariadb.jdbc.Statement.execute(Statement.java:493)
+	at net.sf.log4jdbc.sql.jdbcapi.StatementSpy.execute(StatementSpy.java:923)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:583)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:523)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyUniqueKeys(AbstractSchemaMigrator.java:409)
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:98)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:240)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:119)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:280)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:322)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:457)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1853)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:954)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at com.green.greengramver.GreenGramVer3Application.main(GreenGramVer3Application.java:13)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table user 
+       add constraint UKb87p6qocmykrbhvhbft82x423 unique (uid, provider_type)
+ {executed in 22 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table feed 
+       add constraint FK21mtw3iqe2091y3c5jgy2nwr8 
+       foreign key (writer_user_id) 
+       references user (user_id)
+ {executed in 17 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table feed_comment 
+       add constraint FKg554m92domilyknftfwsxeq17 
+       foreign key (feed_id) 
+       references feed (feed_id)
+ {executed in 15 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table feed_comment 
+       add constraint FKc0e5dirjftdt7d718pc7jqm2 
+       foreign key (user_id) 
+       references user (user_id)
+ {executed in 16 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table feed_like 
+       add constraint FKgurobtyio3jh1vn4n8tmqt842 
+       foreign key (feed_id) 
+       references feed (feed_id)
+ {executed in 14 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table feed_like 
+       add constraint FKie3wsosw5w1vclgev0ofclm5b 
+       foreign key (user_id) 
+       references user (user_id)
+ {executed in 16 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table feed_pic 
+       add constraint FKetn8bebtfpdukr5qrtnairl79 
+       foreign key (feed_id) 
+       references feed (feed_id) 
+       on delete cascade
+ {executed in 16 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table user_follow 
+       add constraint FKi651t243ra5g8sdcsvracrp84 
+       foreign key (to_user_id) 
+       references user (user_id)
+ {executed in 18 msec}
+[2025-02-13 10:38:09 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+1. alter table user_follow 
+       add constraint FK602cn3xgrgd5ch8lcdanddqv5 
+       foreign key (from_user_id) 
+       references user (user_id)
+ {executed in 19 msec}
+[2025-02-13 10:38:09 INFO restartedMain] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2025-02-13 10:38:09 INFO restartedMain] [com.green.greengramver.common.MyFileUtils] MyfileUtils - 생성자: D:/SGSG/download/green_gram_jpa
+[2025-02-13 10:38:09 WARN restartedMain] [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2025-02-13 10:38:10 INFO restartedMain] [org.springframework.data.jpa.repository.query.QueryEnhancerFactory] Hibernate is in classpath; If applicable, HQL parser will be used.
+[2025-02-13 10:38:10 INFO restartedMain] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping] Adding welcome page: class path resource [static/index.html]
+[2025-02-13 10:38:10 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2025-02-13 10:38:10 INFO restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-8080"]
+[2025-02-13 10:38:10 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 8080 (http) with context path '/'
+[2025-02-13 10:38:10 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] Started GreenGramVer3Application in 4.762 seconds (process running for 5.248)
+[2025-02-13 10:50:10 INFO File Watcher] [org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener] Restarting due to 5 class path changes (0 additions, 0 deletions, 5 modifications)
+[2025-02-13 10:50:10 INFO Thread-5] [org.apache.coyote.http11.Http11NioProtocol] Stopping ProtocolHandler ["http-nio-8080"]
+[2025-02-13 10:50:10 INFO Thread-5] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Closing JPA EntityManagerFactory for persistence unit 'default'
+[2025-02-13 10:50:10 INFO Thread-5] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2025-02-13 10:50:10 INFO Thread-5] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.
+[2025-02-13 10:50:10 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] Starting GreenGramVer3Application using Java 17.0.12 with PID 20220 (D:\SGSG\GreenGramOAuth2\build\classes\java\main started by Administrator in D:\SGSG\GreenGramOAuth2)
+[2025-02-13 10:50:10 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] No active profile set, falling back to 1 default profile: "default"
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 15 ms. Found 4 JPA repository interfaces.
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 8080 (http)
+[2025-02-13 10:50:11 INFO restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-8080"]
+[2025-02-13 10:50:11 INFO restartedMain] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2025-02-13 10:50:11 INFO restartedMain] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.33]
+[2025-02-13 10:50:11 INFO restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 319 ms
+[2025-02-13 10:50:11 INFO restartedMain] [org.hibernate.jpa.internal.util.LogHelper] HHH000204: Processing PersistenceUnitInfo [name: default]
+[2025-02-13 10:50:11 INFO restartedMain] [org.hibernate.cache.internal.RegionFactoryInitiator] HHH000026: Second-level cache disabled
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo] No LoadTimeWeaver setup: ignoring JPA class transformer
+[2025-02-13 10:50:11 INFO restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-2 - Starting...
+[2025-02-13 10:50:11 INFO restartedMain] [com.zaxxer.hikari.pool.HikariPool] HikariPool-2 - Added connection net.sf.log4jdbc.sql.jdbcapi.ConnectionSpy@334a4ebb
+[2025-02-13 10:50:11 INFO restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-2 - Start completed.
+[2025-02-13 10:50:11 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.executeQuery(ProxyStatement.java:110)
+11. SELECT @@character_set_database, @@sql_mode
+ {executed in 0 msec}
+[2025-02-13 10:50:11 WARN restartedMain] [org.hibernate.orm.deprecation] HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2025-02-13 10:50:11 INFO restartedMain] [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[2025-02-13 10:50:11 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+11. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:50:11 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:50:11 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+11. select * from `greengram_oauth2`.`feed` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:50:11 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|---------|---------|---------------|
+|feed_id |created_at |updated_at |contents |location |writer_user_id |
+|--------|-----------|-----------|---------|---------|---------------|
+|--------|-----------|-----------|---------|---------|---------------|
+
+[2025-02-13 10:50:11 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+11. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:50:11 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:50:11 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+11. select * from `greengram_oauth2`.`feed` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:50:11 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|---------|---------|---------------|
+|feed_id |created_at |updated_at |contents |location |writer_user_id |
+|--------|-----------|-----------|---------|---------|---------------|
+|--------|-----------|-----------|---------|---------|---------------|
+
+[2025-02-13 10:50:11 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+11. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:50:11 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:50:11 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+11. select * from `greengram_oauth2`.`feed` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:50:11 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|---------|---------|---------------|
+|feed_id |created_at |updated_at |contents |location |writer_user_id |
+|--------|-----------|-----------|---------|---------|---------------|
+|--------|-----------|-----------|---------|---------|---------------|
+
+[2025-02-13 10:50:11 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+11. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:50:11 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:50:11 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+11. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:50:11 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2025-02-13 10:50:11 INFO restartedMain] [com.green.greengramver.common.MyFileUtils] MyfileUtils - 생성자: D:/SGSG/download/green_gram_jpa
+[2025-02-13 10:50:11 WARN restartedMain] [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping] Adding welcome page: class path resource [static/index.html]
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2025-02-13 10:50:11 INFO restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-8080"]
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 8080 (http) with context path '/'
+[2025-02-13 10:50:11 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] Started GreenGramVer3Application in 0.76 seconds (process running for 725.987)
+[2025-02-13 10:50:11 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] Condition evaluation unchanged
+[2025-02-13 10:56:42 INFO File Watcher] [org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener] Restarting due to 4 class path changes (0 additions, 0 deletions, 4 modifications)
+[2025-02-13 10:56:42 INFO Thread-7] [org.apache.coyote.http11.Http11NioProtocol] Stopping ProtocolHandler ["http-nio-8080"]
+[2025-02-13 10:56:42 INFO Thread-7] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Closing JPA EntityManagerFactory for persistence unit 'default'
+[2025-02-13 10:56:42 INFO Thread-7] [com.zaxxer.hikari.HikariDataSource] HikariPool-2 - Shutdown initiated...
+[2025-02-13 10:56:42 INFO Thread-7] [com.zaxxer.hikari.HikariDataSource] HikariPool-2 - Shutdown completed.
+[2025-02-13 10:56:42 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] Starting GreenGramVer3Application using Java 17.0.12 with PID 20220 (D:\SGSG\GreenGramOAuth2\build\classes\java\main started by Administrator in D:\SGSG\GreenGramOAuth2)
+[2025-02-13 10:56:42 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] No active profile set, falling back to 1 default profile: "default"
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 15 ms. Found 4 JPA repository interfaces.
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 8080 (http)
+[2025-02-13 10:56:43 INFO restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-8080"]
+[2025-02-13 10:56:43 INFO restartedMain] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2025-02-13 10:56:43 INFO restartedMain] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.33]
+[2025-02-13 10:56:43 INFO restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 297 ms
+[2025-02-13 10:56:43 INFO restartedMain] [org.hibernate.jpa.internal.util.LogHelper] HHH000204: Processing PersistenceUnitInfo [name: default]
+[2025-02-13 10:56:43 INFO restartedMain] [org.hibernate.cache.internal.RegionFactoryInitiator] HHH000026: Second-level cache disabled
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo] No LoadTimeWeaver setup: ignoring JPA class transformer
+[2025-02-13 10:56:43 INFO restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-3 - Starting...
+[2025-02-13 10:56:43 INFO restartedMain] [com.zaxxer.hikari.pool.HikariPool] HikariPool-3 - Added connection net.sf.log4jdbc.sql.jdbcapi.ConnectionSpy@6ea31d0a
+[2025-02-13 10:56:43 INFO restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-3 - Start completed.
+[2025-02-13 10:56:43 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.executeQuery(ProxyStatement.java:110)
+21. SELECT @@character_set_database, @@sql_mode
+ {executed in 0 msec}
+[2025-02-13 10:56:43 WARN restartedMain] [org.hibernate.orm.deprecation] HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2025-02-13 10:56:43 INFO restartedMain] [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[2025-02-13 10:56:43 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+21. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:56:43 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:56:43 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+21. select * from `greengram_oauth2`.`feed` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:56:43 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|---------|---------|---------------|
+|feed_id |created_at |updated_at |contents |location |writer_user_id |
+|--------|-----------|-----------|---------|---------|---------------|
+|--------|-----------|-----------|---------|---------|---------------|
+
+[2025-02-13 10:56:43 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+21. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 1 msec}
+[2025-02-13 10:56:43 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:56:43 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+21. select * from `greengram_oauth2`.`feed` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:56:43 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|---------|---------|---------------|
+|feed_id |created_at |updated_at |contents |location |writer_user_id |
+|--------|-----------|-----------|---------|---------|---------------|
+|--------|-----------|-----------|---------|---------|---------------|
+
+[2025-02-13 10:56:43 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+21. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:56:43 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:56:43 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+21. select * from `greengram_oauth2`.`feed` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:56:43 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|---------|---------|---------------|
+|feed_id |created_at |updated_at |contents |location |writer_user_id |
+|--------|-----------|-----------|---------|---------|---------------|
+|--------|-----------|-----------|---------|---------|---------------|
+
+[2025-02-13 10:56:43 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+21. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:56:43 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:56:43 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+21. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 10:56:43 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2025-02-13 10:56:43 INFO restartedMain] [com.green.greengramver.common.MyFileUtils] MyfileUtils - 생성자: D:/SGSG/download/green_gram_jpa
+[2025-02-13 10:56:43 WARN restartedMain] [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping] Adding welcome page: class path resource [static/index.html]
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2025-02-13 10:56:43 INFO restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-8080"]
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 8080 (http) with context path '/'
+[2025-02-13 10:56:43 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] Started GreenGramVer3Application in 0.724 seconds (process running for 1117.935)
+[2025-02-13 10:56:43 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] Condition evaluation unchanged
+[2025-02-13 11:04:44 INFO SpringApplicationShutdownHook] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Closing JPA EntityManagerFactory for persistence unit 'default'
+[2025-02-13 11:04:44 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-3 - Shutdown initiated...
+[2025-02-13 11:04:44 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-3 - Shutdown completed.
+[2025-02-13 11:04:47 INFO background-preinit] [org.hibernate.validator.internal.util.Version] HV000001: Hibernate Validator 8.0.1.Final
+[2025-02-13 11:04:47 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] Starting GreenGramVer3Application using Java 17.0.12 with PID 19304 (D:\SGSG\GreenGramOAuth2\build\classes\java\main started by Administrator in D:\SGSG\GreenGramOAuth2)
+[2025-02-13 11:04:47 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] No active profile set, falling back to 1 default profile: "default"
+[2025-02-13 11:04:47 INFO restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2025-02-13 11:04:47 INFO restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2025-02-13 11:04:48 INFO restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2025-02-13 11:04:48 INFO restartedMain] [org.springframework.data.repository.config.RepositoryConfigurationDelegate] Finished Spring Data repository scanning in 37 ms. Found 4 JPA repository interfaces.
+[2025-02-13 11:04:48 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 8080 (http)
+[2025-02-13 11:04:48 INFO restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-8080"]
+[2025-02-13 11:04:48 INFO restartedMain] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2025-02-13 11:04:48 INFO restartedMain] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.33]
+[2025-02-13 11:04:48 INFO restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2025-02-13 11:04:48 INFO restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 1112 ms
+[2025-02-13 11:04:48 INFO restartedMain] [org.hibernate.jpa.internal.util.LogHelper] HHH000204: Processing PersistenceUnitInfo [name: default]
+[2025-02-13 11:04:48 INFO restartedMain] [org.hibernate.Version] HHH000412: Hibernate ORM core version 6.5.3.Final
+[2025-02-13 11:04:48 INFO restartedMain] [org.hibernate.cache.internal.RegionFactoryInitiator] HHH000026: Second-level cache disabled
+[2025-02-13 11:04:48 INFO restartedMain] [org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo] No LoadTimeWeaver setup: ignoring JPA class transformer
+[2025-02-13 11:04:48 INFO restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2025-02-13 11:04:49 INFO restartedMain] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection net.sf.log4jdbc.sql.jdbcapi.ConnectionSpy@9d67b51
+[2025-02-13 11:04:49 INFO restartedMain] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2025-02-13 11:04:49 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyStatement.executeQuery(ProxyStatement.java:110)
+1. SELECT @@character_set_database, @@sql_mode
+ {executed in 0 msec}
+[2025-02-13 11:04:49 WARN restartedMain] [org.hibernate.orm.deprecation] HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2025-02-13 11:04:49 INFO restartedMain] [org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[2025-02-13 11:04:49 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 11:04:49 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 11:04:49 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select * from `greengram_oauth2`.`feed` where 1=0
+ {executed in 0 msec}
+[2025-02-13 11:04:49 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|---------|---------|---------------|
+|feed_id |created_at |updated_at |contents |location |writer_user_id |
+|--------|-----------|-----------|---------|---------|---------------|
+|--------|-----------|-----------|---------|---------|---------------|
+
+[2025-02-13 11:04:49 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 1 msec}
+[2025-02-13 11:04:49 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 11:04:49 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select * from `greengram_oauth2`.`feed` where 1=0
+ {executed in 0 msec}
+[2025-02-13 11:04:49 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|---------|---------|---------------|
+|feed_id |created_at |updated_at |contents |location |writer_user_id |
+|--------|-----------|-----------|---------|---------|---------------|
+|--------|-----------|-----------|---------|---------|---------------|
+
+[2025-02-13 11:04:49 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 11:04:49 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 11:04:49 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select * from `greengram_oauth2`.`feed` where 1=0
+ {executed in 0 msec}
+[2025-02-13 11:04:49 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|---------|---------|---------------|
+|feed_id |created_at |updated_at |contents |location |writer_user_id |
+|--------|-----------|-----------|---------|---------|---------------|
+|--------|-----------|-----------|---------|---------|---------------|
+
+[2025-02-13 11:04:49 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 11:04:49 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 11:04:49 DEBUGrestartedMain] [jdbc.sqltiming]  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select * from `greengram_oauth2`.`user` where 1=0
+ {executed in 0 msec}
+[2025-02-13 11:04:49 INFO restartedMain] [jdbc.resultsettable] 
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|user_id |created_at |updated_at |nick_name |pic |provider_type |uid |upw |
+|--------|-----------|-----------|----------|----|--------------|----|----|
+|--------|-----------|-----------|----------|----|--------------|----|----|
+
+[2025-02-13 11:04:49 INFO restartedMain] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2025-02-13 11:04:49 INFO restartedMain] [com.green.greengramver.common.MyFileUtils] MyfileUtils - 생성자: D:/SGSG/download/green_gram_jpa
+[2025-02-13 11:04:49 WARN restartedMain] [org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2025-02-13 11:04:50 INFO restartedMain] [org.springframework.data.jpa.repository.query.QueryEnhancerFactory] Hibernate is in classpath; If applicable, HQL parser will be used.
+[2025-02-13 11:04:50 INFO restartedMain] [org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping] Adding welcome page: class path resource [static/index.html]
+[2025-02-13 11:04:50 INFO restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] LiveReload server is running on port 35729
+[2025-02-13 11:04:50 INFO restartedMain] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-8080"]
+[2025-02-13 11:04:50 INFO restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 8080 (http) with context path '/'
+[2025-02-13 11:04:50 INFO restartedMain] [com.green.greengramver.GreenGramVer3Application] Started GreenGramVer3Application in 3.662 seconds (process running for 4.038)
+[2025-02-13 11:16:31 INFO SpringApplicationShutdownHook] [org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean] Closing JPA EntityManagerFactory for persistence unit 'default'
+[2025-02-13 11:16:31 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2025-02-13 11:16:31 INFO SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.

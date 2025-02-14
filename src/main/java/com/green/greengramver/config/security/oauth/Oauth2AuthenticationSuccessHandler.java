@@ -34,14 +34,15 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             log.error("onAuthenticationSuccess called with a committed response {}", res);
             return;
         }
-        String targetUrl = "";
+        String targetUrl = this.determineTargetUrl(req, res, auth);
+        log.info("successTargetUrl={}", targetUrl);
         clearAuthenticationAttributes(req, res);
         getRedirectStrategy().sendRedirect(req, res, targetUrl); // "fe/redirect?access_token=dddd&user_id=12"
     }
 
     @Override
     protected String determineTargetUrl(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
-        String redirectUrl = cookieUtils.getValue(req, globalOauth2.getRedirectUriParamCookieName(), String.class);
+        String redirectUrl = cookieUtils.getValue(req, globalOauth2.getAuthorizationRequestCookieName(), String.class);
 
         log.info("determineTargetUrl called with redirectUrl {}", getDefaultTargetUrl());
 
