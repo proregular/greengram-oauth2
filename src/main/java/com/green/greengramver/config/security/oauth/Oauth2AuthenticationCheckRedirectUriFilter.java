@@ -24,20 +24,20 @@ public class Oauth2AuthenticationCheckRedirectUriFilter extends OncePerRequestFi
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         /*
             호스트 주소값을 제외한 요청한 URI
-            예) http://localhost:8080/oauth2/authorization
+            예) http://localhost:8080/oauth2/authorization?redirect_uri=abc
             호스트 주소값: http://localhost:8080
-            제외한 요청한 URI: /oauth2/authorization
-        */
-        String requrstUri = request.getRequestURI(); // 요청한 URI
-        log.info("request uri: {}", requrstUri);
-
-        if(requrstUri.startsWith(globalOauth2.getBaseUri())) {
+            제외한 요청한 URI(requestUri): /oauth2/authorization?redirect_uri=abc
+            String redirectUri = abc;
+         */
+        String requestUri = request.getRequestURI();
+        log.info("request uri: {}", requestUri);
+        if(requestUri.startsWith(globalOauth2.getBaseUri())) { //소셜로그인 요청한 것이라면
             String redirectUri = request.getParameter("redirect_uri");
-            if(redirectUri != null && !hasAuthorizedRedirectUri(redirectUri)) { // 약속한 redirect_uri값이 아니었다면
+            if(redirectUri != null && !hasAuthorizedRedirectUri(redirectUri)) { //약속한 redirect_uri값이 아니었다면
                 String errRedirectUrl = UriComponentsBuilder.fromUriString("/err_message")
-                                                            .queryParam("message", "유효한 Redirect URL이 아닙니다.").encode()
-                                                            .toUriString();
-                // reeRedirectUrl = "/err_message?message=유효한 Redirect URL이 아닙니다."
+                        .queryParam("message", "유효한 Redirect URL이 아닙니다.").encode()
+                        .toUriString();
+                //errRedirectUrl = "/err_message?message=유효한 Redirect URL이 아닙니다."
                 response.sendRedirect(errRedirectUrl);
                 return;
             }
@@ -46,10 +46,10 @@ public class Oauth2AuthenticationCheckRedirectUriFilter extends OncePerRequestFi
         filterChain.doFilter(request, response);
     }
 
-    // 약속한 redirect_uri가 맞는지 체크 없으면 false, 있으면 true 리턴
+    //약속한 redirect_uri가 맞는지 체크 없으면 false, 있으면 true 리턴
     private boolean hasAuthorizedRedirectUri(String redirectUri) {
         for(String uri : globalOauth2.getAuthorizedRedirectUris()) {
-            if(uri.startsWith(redirectUri)) {
+            if(uri.equals(redirectUri)) {
                 return true;
             }
         }

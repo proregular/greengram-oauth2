@@ -38,18 +38,17 @@ public class MyOauth2UserService extends DefaultOAuth2UserService {
     private OAuth2User process(OAuth2UserRequest req) {
         OAuth2User oAuth2User = super.loadUser(req);
         /*
-            req.getClientRegistration().getRegistrationId(); 소셜로그인 신청한 플랫폼 문자열 값이 넘어온다.
-            문자열 값은 "application.yml"파일 안에 spring.security.oauth2.client.registration 아래에 있는 속성값들이다. (google, kakao, naver)
+        req.getClientRegistration().getRegistrationId(); 소셜로그인 신청한 플랫폼 문자열값이 넘어온다.
+        플랫폼 문자열값은 spring.security.oauth2.client.registration 아래에 있는 속성값들이다. (google, kakao, naver)
          */
         SignInProviderType signInProviderType = SignInProviderType.valueOf(req.getClientRegistration()
-                                                                              .getRegistrationId()
-                                                                              .toUpperCase());
-        // 사용하기 편하도록 규격화된 객체로 변환
+                .getRegistrationId()
+                .toUpperCase());
+        //사용하기 편하도록 규격화된 객체로 변환
         Oauth2UserInfo oauth2UserInfo = oauth2UserInfoFactory.getOauth2UserInfo(signInProviderType, oAuth2User.getAttributes());
 
-        // 기존에 회원가입이 되어있는지 체크
+        //기존에 회원가입이 되어있는지 체크
         User user = userRepository.findByUidAndProviderType(oauth2UserInfo.getId(), signInProviderType);
-
         if(user == null) { // 최초 로그인 상황 > 회원가입 처리
             user = new User();
             user.setUid(oauth2UserInfo.getId());
@@ -60,13 +59,13 @@ public class MyOauth2UserService extends DefaultOAuth2UserService {
             userRepository.save(user);
         }
 
-        Oauth2JwtUser oauth2JwtUser = new Oauth2JwtUser(user.getNickName()
+        Oauth2JwtUser oauth2jwtUser = new Oauth2JwtUser(user.getNickName()
                 , user.getPic()
                 , user.getUserId()
                 , Arrays.asList("ROLE_USER"));
 
         MyUserDetails myUserDetails = new MyUserDetails();
-        myUserDetails.setJwtUser(oauth2JwtUser);
+        myUserDetails.setJwtUser(oauth2jwtUser);
 
         return myUserDetails;
     }

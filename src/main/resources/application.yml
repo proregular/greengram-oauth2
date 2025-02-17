@@ -1,6 +1,6 @@
 #변수 선언
 file:
-  directory: D:/SGSG/download/green_gram_jpa
+  directory: D:/SGSG/download/green_gram_oauth2
 
 global:
   oauth2:
@@ -9,10 +9,11 @@ global:
     # 연결시키기 위해 쿠키를 사용한다.
     authorization-request-cookie-name: oauth2_auth_request
     redirect-uri-param-cookie-name: redirect_uri
-    cookie-expiry-second: 180
+    cookie-expiry-seconds: 180
     authorized-redirect-uris:
       - http://localhost:8080/fe/redirect
-      - http://112.222.157.156:5222/fe/redirect
+      - http://192.168.0.144:8080/fe/redirect
+      - http://112.222.157.156:8080/fe/redirect
 
 const:
   default-page-size: 20
@@ -75,13 +76,13 @@ spring:
             client-name: Kakao
             client-id: ${SOCIAL.KAKAO.CLIENT_ID}
             client-secret: ${SOCIAL.KAKAO.SECRET}
-            client-authentication-method: client_secret_post #client_id, client_secret 쿼리 스트링으로 날아가야 한다.
-            authorization-grant-type: authorization_code # 권한부여 유형 (인가코드 -> access-token 받는 방식 선택)
+            client-authentication-method: client_secret_post #client-id, client-secret 쿼리스트링으로 날아가야 한다.
+            authorization-grant-type: authorization_code #권한부여 유형 (인가코드 > access-token 받는 방식 선택)
             redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
-                          # baseUrl: 서버가 돌아가고 있는 host
-                          # action: login
-                          # registrationId: kakao
-                          # 결과: localhost:8080/login/oauth2/code/kakao
+              # baseUrl: 서버가 돌아가고 있는 host
+              # action: login
+            # registrationId: kakao
+            # 결과: localhost:8080/login/oauth2/code/kakao
             scope:
               - profile_nickname
               - profile_image
